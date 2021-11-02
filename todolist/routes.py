@@ -4,20 +4,31 @@ from todolist import db
 from flask import render_template, redirect, url_for, session, flash, request
 from todolist.models import Task, User
 from todolist.forms import LoginForm, RegisterForm, TaskForm
-
-from models import Task, User
-
-
+from todolist.helpers import login_required
+from flask_login import login_user
 
 @app.route('/')
 @app.route('/index')
 @app.route('/home')
 def home():
-    return render_template('index.html')
+    return render_template('home.html')
+
 
 @app.route('/tasks', methods=['GET','POST'])
+@login_required
 def tasks():
-    tasks = Task.query.filter_by(username=session.get('user_id'))
+    form = TaskForm()
+    if request.method == "POST":
+        task = Task(title=form.title.data,
+                    description=form.description.data,
+                    importance=form.importance.data)
+        db.session.add(task)
+        db.session.commit()
+    print(session['user_id'])
+    tasks = Task.query.filter_by(user=User.query.filter_by(id=session['user_id']).first().id).all()
+    print(f'tasks = {tasks}')
+
+    return render_template('tasks.html', tasks=tasks, form=form)
 
 @app.route('/register', methods = ['GET', 'POST'])
 def register():
@@ -27,14 +38,14 @@ def register():
             user = User(username=form.username.data,
                         email=form.email.data,
                         password=form.password.data)
-            db.sessoin.add(user)
-            db.commit()
-            return redirect(url_for('tasks'))
+            db.session.add(user)
+            db.session.commit()
+            return redirect(url_for('login'))
         if form.errors != {}:
             for msg in form.errors.values():
                 flash(f'There was an error creating user: {msg}', category='danger')
-    else:
-        return render_template('register.html')
+    
+    return render_template('register.html', form=form)
 
 @app.route('/login', methods = ['GET', 'POST'])
 def login():
@@ -42,14 +53,18 @@ def login():
     if request.method == 'POST':
         if form.validate_on_submit():
             user_id = User.query.filter_by(username=form.username.data).first()
-            if user_id and user_id.check_password(password=form.password.data):
-                session['user_id'] = user_id
+            print(f'user_id={user_id.id}')
+            if user_id and user_id.check_password(pass_to_check=form.password.data):
+                session['user_id'] = user_id.id
+                login_user(user_id)
                 flash(f'You are logged in as {user_id.username}', category='success')
                 return redirect(url_for('tasks'))
             else:
-                flash('Password incorrect.', category='danger')
-        else:
-            return render_template('login.html', form=form)
-    else:
-        return render_template('login.html', form=form)
+                flash('Username or password incorrect.', category='danger')
 
+    return render_template('login.html', form=form)
+
+@app.route('/logout')
+def logout():
+    session.clear()
+    return redirect('/')

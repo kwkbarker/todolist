@@ -5,7 +5,7 @@ from flask_login import LoginManager
 import os
 from flask_session import Session
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='/todolist/static')
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///todolist.db'
 app.config['SECRET_KEY'] = '5475298b378974fc7aa4f496'
 app.config['SESSION_PERMANENT'] = True
@@ -13,7 +13,8 @@ app.config['SESSION_TYPE'] = 'filesystem'
 Session(app)
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
-login_manager = LoginManager(app)
+login_manager = LoginManager()
+login_manager.init_app(app)
 
 
 from todolist import routes
