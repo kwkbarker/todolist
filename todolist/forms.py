@@ -30,5 +30,6 @@ class LoginForm(FlaskForm):
 class TaskForm(FlaskForm):
     title = StringField(label='Title:', validators=[DataRequired()])
     description = StringField(label='Description:')
-    importance = RadioField(label='Importance:', choices=[(1,'Urgently'), (2,'Soon'), (3,'Whenever')])
-    submit = SubmitField(label='Submit')
+    importance = RadioField(label='Importance:')
+    kill = StringField()
+    subbutt = SubmitField(label='Submit')

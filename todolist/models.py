@@ -1,6 +1,8 @@
-from todolist import db, login_manager
+from todolist import db, login_manager, admin
 from todolist import bcrypt
 from flask_login import UserMixin
+from flask_admin.contrib.sqla import ModelView
+
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -33,8 +35,11 @@ class Task(db.Model):
     id = db.Column(db.Integer(), primary_key=True)
     title = db.Column(db.String(length=128), nullable=False)
     description = db.Column(db.String(length=1024), nullable=False)
-    importance = db.Column(db.Integer())
+    importance = db.Column(db.String(length=12), nullable=False)
     user = db.Column(db.Integer(), db.ForeignKey('user.id'))
 
     def __repr__(self):
         return self.title
+
+admin.add_view(ModelView(User, db.session))
+admin.add_view(ModelView(Task, db.session))

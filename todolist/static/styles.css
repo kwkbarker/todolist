@@ -1,0 +1,16 @@
+body {
+    background-color: #212121;
+    color: white
+}
+
+.card .bg-danger {
+    background-color: #ff8080 !important;
+}
+
+.card .bg-warning {
+    background-color: #ffdf80 !important;
+}
+
+.card .bg-secondary {
+    background-color: #bfbfbf !important;
+}

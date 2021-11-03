@@ -1,6 +1,5 @@
 from flask.globals import request
-from todolist import app
-from todolist import db
+from todolist import app, db, login_manager
 from flask import render_template, redirect, url_for, session, flash, request
 from todolist.models import Task, User
 from todolist.forms import LoginForm, RegisterForm, TaskForm
@@ -9,9 +8,11 @@ from flask_login import login_user
 
 @app.route('/')
 @app.route('/index')
-@app.route('/home')
 def home():
-    return render_template('home.html')
+    if session.get('user_id') == True:
+        return redirect(url_for('tasks'))
+    else:
+        return redirect(url_for('login'))
 
 
 @app.route('/tasks', methods=['GET','POST'])
@@ -19,12 +20,22 @@ def home():
 def tasks():
     form = TaskForm()
     if request.method == "POST":
-        task = Task(title=form.title.data,
-                    description=form.description.data,
-                    importance=form.importance.data)
-        db.session.add(task)
-        db.session.commit()
-    print(session['user_id'])
+        print(form.kill.data)
+        if form.kill.data != "":
+            print(form.kill.data)
+            done_task = Task.query.filter_by(id=form.kill.data).first()
+            db.session.delete(done_task)
+            db.session.commit()
+        else:
+            if form.title.data != '':
+                task = Task(title=form.title.data,
+                            description=form.description.data,
+                            importance=form.importance.data,
+                            user=session['user_id'])
+            
+                db.session.add(task)
+                db.session.commit()
+
     tasks = Task.query.filter_by(user=User.query.filter_by(id=session['user_id']).first().id).all()
     print(f'tasks = {tasks}')
 
@@ -68,3 +79,15 @@ def login():
 def logout():
     session.clear()
     return redirect('/')
+
+# class AdminView(BaseView):
+    @expose('/')
+    def index(self):
+        return self.render('index.html')
+    
+    def is_accessible(self):
+        return login_manager.current_user.is_authenticated()
+
+    def inaccessible_callback(self, name, **kwargs):
+        # redirect to login page if user doesn't have access
+        return redirect(url_for('login', next=request.url))

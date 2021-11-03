@@ -1,66 +1,110 @@
 {% extends 'base.html' %}
 
-{% block title %}ToDo Tasks{% endblock %}
+{% block title %}
+    ToDo Tasks
+{% endblock %}
 
 {% block content %}
+
 <div class='container'>
     <div class="row row-content mb-5">
         <div class='col-12'>
 
-            <h3>ToDo Tasks</h3>
+            <h3 class="mt-5">ToDo Tasks</h3>
 
-            <div id='accordion'>
+            <div class='accordion' id='accordion-tasks'>
+                
                 {% if tasks %}
-                {% for task in tasks %}
-                <div class='card'>
-                    <div class="card-header" role='tab'>
-                        <h4 class='mb-0' data-toggle="collapse" data-target='#{{ task.id }}'>
-                            {{ task.title }}
-                        </h4>
+                    {% for task in tasks %}
+
+                    <div class='card'>
+                        <div class="card-header bg-{{ task.importance }} align-content-center" role='tab' id="heading{{ task.id }}">
+                            <div class="row">
+                                
+                                <div class='col-12 col-sm-8 col-md-10 text-left align-content-center'>
+                                    <h4 class='mb-0 text-white'>
+                                        <a type='button' class='btn btn-outline-dark btn-lg collapsed'
+                                            data-toggle='collapse' data-target='#panel{{ task.id }}'
+                                            aria-expanded="false" aria-controls="{{ task.id }}">
+                                            {{ task.title }}
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div class='col-12 col-sm-4 col-md-2 text-right align-content-center'><form method='POST'><button class='btn btn-sm btn-outline-dark' name="kill" value='{{ task.id }}'>Done!</button></div></form>
+
+                            </div>
+                        </div>
+
+                        <div role='tabpanel' class='collapse text-black-50' aria-labelledby='heading{{ task.id }}' 
+                            id='panel{{ task.id }}' data-parent='#accordion-tasks'>
+                            <div class='card-body'>
+                                {{ task.description }}
+                            </div>
+                        </div>
                     </div>
-                    <div role='tabpanel' class='collapse' id='{{ task.id }}' data-parent='#accordion'>
-                        <div class='card-body'>
-                            <p class='d-none d-sm-block'>{{ task.description }}</p>
+
+                    {% endfor %}
+                {% endif %}
+
+            </div>
+        </div>   
+    </div>
+
+    <div class="row row-content mb-5">
+        <div class="col-12">
+
+            <h4>New Task</h4>
+
+            <form id="task_form" method='POST'>
+                {{ form.hidden_tag() }}
+
+                <div class="row-content justify-content-center mb-3">
+
+                    <p>{{ form.title(class="form-control", placeholder="Title") }}</p>
+
+                    <p>{{ form.description(class="form-control", placeholder="Description") }}</p>
+
+                    <div class='row row-content' style="display: inline-block;">
+                        <div class='col-sm-2'>
+                            {{ form.importance.label() }}
+                        </div>
+                        <div class='col-sm-1'></div>
+                        <div class='btn-group btn-group-toggle col-sm-9' data-toggle='buttons'>
+                            <label class='btn btn-danger'>
+                                <input type='radio' name='importance' value='danger'>Urgent
+                            </label>
+                            <label class='btn btn-warning'>
+                                <input type='radio' name='importance' value='warning'>Soon
+                            </label>
+                            <label class='btn btn-secondary'>
+                                <input type='radio' name='importance' value='secondary'>Whenever
+                            </label>
                         </div>
                     </div>
                 </div>
 
-                {% endfor %}
-
-                {% endif %}
-
-
-            </div>
-        </div>
-    
-    </div>
-
-    <div class="row row-content">
-        <div class="col-12">
-            <h4>New Task</h4>
-            <form class="task-form">
-                {{ form.hidden_tag() }}
-                {{ form.csrf_token() }}
-
-                <div class="row-content justify-content-center">
-                    {{ form.title(class="form-control", placeholder="Title") }}
-                    {{ form.description(class="form-control", placeholder="Description") }}
-                    {{ form.importance.label() }}
-                    {{ form.importance(class="form-control") }}
-                </div>
-                <div>
-                    {{ form.submit }}
-                </div>
+                <div class="row row-content justify-content-center">{{ form.subbutt(class="btn btn-lg btn-primary", onclick='submitForm()') }}</div>
 
             </form>
         </div>
     </div>
-
-
-
-
 </div>
 
+<script>
+    function submitForm() {
+        document.getElementById('task_form').submit();
+        document.getElementById('task_form').reset();
+    }
 
+
+    // document.addEventListener('DOMContentLoaded', () => {
+    //     clearFields();
+    // })
+
+    // function clearFields() {
+    //     document.getElementById('title').value = '';
+    //     document.getElementById('description').value = '';
+    // }
+</script>
 
 {% endblock %}
