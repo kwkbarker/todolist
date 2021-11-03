@@ -41,5 +41,6 @@ class Task(db.Model):
     def __repr__(self):
         return self.title
 
+# add db views to admin page
 admin.add_view(ModelView(User, db.session))
 admin.add_view(ModelView(Task, db.session))

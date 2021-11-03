@@ -11,7 +11,6 @@ from flask_login import login_user, current_user
 @app.route('/')
 @app.route('/index')
 def home():
-    print(current_user.is_authenticated)
     if current_user.is_authenticated:
         return redirect(url_for('tasks'))
     else:
@@ -23,14 +22,17 @@ def home():
 def tasks():
     form = TaskForm()
     if request.method == "POST":
-        print(form.kill.data)
+        
+        # if 'done' button pressed, delete task from db
         if form.kill.data != "":
             print(form.kill.data)
             done_task = Task.query.filter_by(id=form.kill.data).first()
             db.session.delete(done_task)
             db.session.commit()
         else:
+            # ensure at least title entered
             if form.title.data != '':
+                # add task to db
                 task = Task(title=form.title.data,
                             description=form.description.data,
                             importance=form.importance.data,
@@ -39,9 +41,8 @@ def tasks():
                 db.session.add(task)
                 db.session.commit()
 
+    # retrieve tasks from db
     tasks = Task.query.filter_by(user=User.query.filter_by(id=session['user_id']).first().id).all()
-    print(f'tasks = {tasks}')
-
     return render_template('tasks.html', tasks=tasks, form=form)
 
 @app.route('/register', methods = ['GET', 'POST'])
@@ -55,6 +56,8 @@ def register():
             db.session.add(user)
             db.session.commit()
             return redirect(url_for('login'))
+        
+        # error handling
         if form.errors != {}:
             for msg in form.errors.values():
                 flash(f'There was an error creating user: {msg}', category='danger')
@@ -73,6 +76,8 @@ def login():
                 login_user(user_id)
                 flash(f'You are logged in as {user_id.username}', category='success')
                 return redirect(url_for('tasks'))
+           
+            # error handling
             else:
                 flash('Username or password incorrect.', category='danger')
 
@@ -83,15 +88,3 @@ def logout():
     session.clear()
     logout_user()
     return redirect('/')
-
-# class AdminView(BaseView):
-    @expose('/')
-    def index(self):
-        return self.render('index.html')
-    
-    def is_accessible(self):
-        return login_manager.current_user.is_authenticated()
-
-    def inaccessible_callback(self, name, **kwargs):
-        # redirect to login page if user doesn't have access
-        return redirect(url_for('login', next=request.url))

@@ -4,9 +4,8 @@ from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
 from flask_session import Session
 from flask_admin import Admin
-# from todolist.models import User, Task
 
-
+# initialize app, db, session, hash function, login, admin
 app = Flask(__name__, static_url_path='/todolist/static')
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///todolist.db'
