@@ -1,15 +1,18 @@
 from flask.globals import request
+import flask_login
+from flask_login.utils import logout_user
 from todolist import app, db, login_manager
 from flask import render_template, redirect, url_for, session, flash, request
 from todolist.models import Task, User
 from todolist.forms import LoginForm, RegisterForm, TaskForm
 from todolist.helpers import login_required
-from flask_login import login_user
+from flask_login import login_user, current_user
 
 @app.route('/')
 @app.route('/index')
 def home():
-    if session.get('user_id') == True:
+    print(current_user.is_authenticated)
+    if current_user.is_authenticated:
         return redirect(url_for('tasks'))
     else:
         return redirect(url_for('login'))
@@ -78,6 +81,7 @@ def login():
 @app.route('/logout')
 def logout():
     session.clear()
+    logout_user()
     return redirect('/')
 
 # class AdminView(BaseView):
