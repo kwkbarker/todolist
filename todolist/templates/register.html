@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block title %}Register{% endblock %}
+
+{% block content %}
+
+
+    <div class="container">
+        <form method="POST" class="form-register">
+            {{ form.hidden_tag() }}
+            {{ form.csrf_token }}
+            <div class='row row-content justify-content-center mt-2'>
+                <h1 class="h3 mb-3 font-weight-normal">
+                    Register
+                </h1>
+            </div>
+            <br>
+            <div class='row row-content justify-content-center'>
+                <div class="col-sm-2"></div>
+                <div class="col-12 col-sm-8">
+                    <p>{{ form.username(class="form-control", placeholder="Username")}}</p>
+                    <p>{{ form.email(class="form-control", placeholder="Email")}}</p>
+                    <p>{{ form.password(class="form-control", placeholder="Password")}}</p>
+                    <p>{{ form.confirmation(class="form-control", placeholder="Confirm Password")}}</p>
+                </div>
+                <div class="col-sm-2"></div>
+            </div>
+     
+            <div class="row row-content mb-2 justify-content-center">{{ form.submit(class="btn btn-lg btn-primary")}}</div>
+
+            <div class="row row-content justify-content-end col-sm-10 mt-4">
+                <h6>Already have an account?</h6>
+            </div>
+            <div class='row row-content justify-content-end col-sm-10'>
+                <a href="{{ url_for('login') }}">Log In</a>
+            </div>
+
+
+        </form>
+    </div>
+
+
+{% endblock %}
