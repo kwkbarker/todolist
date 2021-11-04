@@ -1,8 +1,7 @@
 from todolist import db, login_manager, admin
-from todolist import bcrypt
 from flask_login import UserMixin
 from flask_admin.contrib.sqla import ModelView
-
+import bcrypt
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -24,11 +23,11 @@ class User(db.Model, UserMixin):
     
     @password.setter
     def password(self, unhashed_pw):
-        self.password_hash = bcrypt.generate_password_hash(unhashed_pw).decode('utf-8')
+        self.password_hash = bcrypt.hashpw(unhashed_pw.encode('utf-8'), bcrypt.gensalt())
 
 
     def check_password(self, pass_to_check):
-        return bcrypt.check_password_hash(self.password_hash, pass_to_check)
+        return bcrypt.hashpw(pass_to_check.encode('utf-8'), self.password_hash) == self.password_hash
 
 
 class Task(db.Model):

@@ -83,7 +83,7 @@
                     </div>
                 </div>
 
-                <div class="row row-content justify-content-center">{{ form.subbutt(class="btn btn-lg btn-primary", onclick='submitForm()') }}</div>
+                <div class="row row-content justify-content-center">{{ form.subbutt(class="btn btn-lg btn-primary") }}</div>
 
             </form>
         </div>
@@ -92,20 +92,17 @@
 
 <script>
     // clear input fields after submit - NOT WORKING
-    function submitForm() {
-        document.getElementById('task_form').submit();
-        document.getElementById('task_form').reset();
+            
+
+
+    document.addEventListener('DOMContentLoaded', () => {
+        clearFields();
+    })
+
+    function clearFields() {
+        document.getElementById('title').value = '';
+        document.getElementById('description').value = '';
     }
-
-
-    // document.addEventListener('DOMContentLoaded', () => {
-    //     clearFields();
-    // })
-
-    // function clearFields() {
-    //     document.getElementById('title').value = '';
-    //     document.getElementById('description').value = '';
-    // }
 </script>
 
 {% endblock %}
