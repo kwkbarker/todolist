@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block content %}
-
+<script src="/todolist/static/apps.js"></script>
 <div class='container'>
     <div class="row row-content mb-5">
         <div class='col-12'>
@@ -25,19 +25,52 @@
                                     <h4 class='mb-0 text-white'>
                                         <a type='button' class='btn btn-outline-dark btn-lg collapsed'
                                             data-toggle='collapse' data-target='#panel{{ task.id }}'
-                                            aria-expanded="false" aria-controls="{{ task.id }}">
+                                            aria-expanded="false" aria-controls="{{ task.id }}" id="title{{ task.id }}">
                                             {{ task.title }}
                                         </a>
                                     </h4>
                                 </div>
-                                <div class='col-12 col-sm-4 col-md-2 text-right align-content-center'><form method='POST'><button class='btn btn-sm btn-outline-dark' name="kill" value='{{ task.id }}'>Done!</button></div></form>
+                                <div class='col-12 col-sm-4 col-md-2 text-right align-content-center'>
+                                    <form method='POST'>
+                                        <button class='btn btn-sm btn-outline-dark' name="edit" id="edit{{ task.id }}" onclick="editTask(`{{ task.id }}`)">Edit</button>
+                                        <button class='btn btn-sm btn-outline-dark' name="kill" value='{{ task.id }}'>Done!</button>
+                                    </form>
+                                </div>
+                                <!-- edit window modal triggered by edit button -->
+                                <div id="editWindow{{ task.id }}" class="modal">
+                                    <div class="modal-content">
+                                        <span id="close{{ task.id }}">&times;</span>
+                                        <form method="POST">
+                                            <h4 style="color: black;">Edit Task</h4>
+                                            <div class="input-group mb-3">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text" id="edittitle{{ task.id }}">Title</span>
+                                                </div>
+                                                    <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                                            </div>
+                                              
+                                            <div class="input-group mb-3">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text" id="editdescription{{ task.id }}">Description</span>
+                                                </div>
+                                                <input type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+                                            </div>
+
+                                            <div class='input-group mb-3'>
+                                                <button type="button" class="btn btn-sm btn-secondary" name="put" id="submit{{ task.id }}">Submit</button>
+                                            </div>
+                                              
+                                        </form>
+                                    </div>
+                                  
+                                </div>
 
                             </div>
                         </div>
 
                         <div role='tabpanel' class='collapse text-black-50' aria-labelledby='heading{{ task.id }}' 
                             id='panel{{ task.id }}' data-parent='#accordion-tasks'>
-                            <div class='card-body'>
+                            <div class='card-body' id="description{{ task.id }}">
                                 {{ task.description }}
                             </div>
                         </div>
@@ -89,20 +122,5 @@
         </div>
     </div>
 </div>
-
-<script>
-    // clear input fields after submit - NOT WORKING
-            
-
-
-    document.addEventListener('DOMContentLoaded', () => {
-        clearFields();
-    })
-
-    function clearFields() {
-        document.getElementById('title').value = '';
-        document.getElementById('description').value = '';
-    }
-</script>
 
 {% endblock %}

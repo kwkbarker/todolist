@@ -24,4 +24,3 @@ admin = Admin(app, template_mode='bootstrap3')
 
 from todolist import routes
 
-
