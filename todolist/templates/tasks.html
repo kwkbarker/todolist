@@ -25,14 +25,12 @@
                                     <h4 class='mb-0 text-white'>
                                         <a type='button' class='btn btn-outline-dark btn-lg collapsed'
                                             data-toggle='collapse' data-target='#panel{{ task.id }}'
-                                            aria-expanded="false" aria-controls="{{ task.id }}" id="title{{ task.id }}">
-                                            {{ task.title }}
-                                        </a>
+                                            aria-expanded="false" aria-controls="{{ task.id }}" id="title{{ task.id }}">{{ task.title }}</a>
                                     </h4>
                                 </div>
                                 <div class='col-sm-4 text-right'>
                                         <a class='btn btn-sm btn-outline-dark' name="edit" id="edit{{ task.id }}" 
-                                            data-toggle="modal" data-target="#editWindow{{ task.id }}" onclick=`return fillFields( {{ task.id }} )`>Edit</a>
+                                            data-toggle="modal" data-target="#editWindow{{ task.id }}" onclick='fillFields(`{{ task.id }}`)'>Edit</a>
                                     <form method='POST'>
                                         <input type="hidden" name="protocol" value="delete">
                                         <button class='btn btn-sm btn-outline-dark' name="delete" value='{{ task.id }}'>Done!</button>
@@ -85,9 +83,7 @@
 
                         <div role='tabpanel' class='collapse text-black-50' aria-labelledby='heading{{ task.id }}' 
                             id='panel{{ task.id }}' data-parent='#accordion-tasks'>
-                            <div class='card-body' id="description{{ task.id }}">
-                                {{ task.description }}
-                            </div>
+                            <div class='card-body' id="description{{ task.id }}">{{ task.description }}</div>
                         </div>
                     </div>
 

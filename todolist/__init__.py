@@ -4,7 +4,7 @@ from flask_login import LoginManager
 # from flask_session import Session
 from flask_admin import Admin
 import os
-import pymysql
+import sqlalchemy
 
 # initialize app, db, session, hash function, login, admin
 app = Flask(__name__, static_url_path='/todolist/static')
@@ -29,26 +29,30 @@ from todolist import routes
 # db_user = os.environ["CLOUD_SQL_USERNAME"]
 # db_password = os.environ["CLOUD_SQL_PASSWORD"]
 # db_name = os.environ["CLOUD_SQL_DATABASE_NAME"]
-# db_connection_name = os.environ["CLOUD_SQL_CONNECTION_NAME"]
+# db_host = os.environ["CLOUD_SQL_CONNECTION_NAME"]
 
-# if os.environ.get('GAE_ENV') == 'standard':
-#     # If deployed, use the local socket interface for accessing Cloud SQL
-#     unix_socket = '/cloudsql/{}'.format(db_connection_name)
-#     cnx = pymysql.connect(user=db_user, password=db_password,
-#                             unix_socket=unix_socket, db=db_name)
-# else:
-#     # If running locally, use the TCP connections instead
-#     # Set up Cloud SQL Proxy (cloud.google.com/sql/docs/mysql/sql-proxy)
-#     # so that your application can use 127.0.0.1:3306 to connect to your
-#     # Cloud SQL instance
-#     host = '127.0.0.1'
-#     cnx = pymysql.connect(user=db_user, password=db_password,
-#                             host=host, db=db_name)
+# # Extract port from db_host if present,
+# # otherwise use DB_PORT environment variable.
+# host_args = db_host.split(":")
+# if len(host_args) == 1:
+#     db_hostname = db_host
+#     db_port = os.environ["DB_PORT"]
+# elif len(host_args) == 2:
+#     db_hostname, db_port = host_args[0], int(host_args[1])
 
-# with cnx.cursor() as cursor:
-#     cursor.execute('YOUR QUERY GOES HERE;')
-#     result = cursor.fetchall()
-#     current_msg = result[0][0]
-# cnx.close()
+# db = sqlalchemy.create_engine(
+#     # Equivalent URL:
+#     # mysql+pymysql://<db_user>:<db_pass>@<db_host>:<db_port>/<db_name>
+#     sqlalchemy.engine.url.URL.create(
+#         drivername="mysql+pymysql",
+#         username=db_user,  # e.g. "my-database-user"
+#         password=db_password,  # e.g. "my-database-password"
+#         host=db_hostname,  # e.g. "127.0.0.1"
+#         port=db_port,  # e.g. 3306
+#         database=db_name,  # e.g. "my-database-name"
+#     ),
+#     # **db_config
+# )
 
-# # return str(current_msg)
+# app.config['SQLALCHEMY_DATABASE_URI'] = f'{db_user}:{db_password}@{db_hostname}:{db_port}'
+# db = SQLAlchemy(app)

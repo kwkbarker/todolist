@@ -11,14 +11,14 @@ function fillFields(task) {
     console.log(task);
     
     var title = document.getElementById(`title${task}`);
-    console.log(title.value);
+    console.log(title.innerHTML);
     
     var edittitle = document.getElementById(`edittitle${task}`);
     var description = document.getElementById(`description${task}`);
     var editdescription = document.getElementById(`editdescription${task}`);
     
-    edittitle.value = title.value;
-    editdescription.value = description.value;
+    edittitle.value = title.innerHTML;
+    editdescription.value = description.innerHTML;
 }
 
 // function editTask(task) {
