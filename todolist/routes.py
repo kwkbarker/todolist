@@ -1,7 +1,6 @@
 from flask.globals import request
-import flask_login
 from flask_login.utils import logout_user
-from todolist import app, db, login_manager
+from todolist import app, db
 from flask import render_template, redirect, url_for, session, flash, request
 from todolist.models import Task, User
 from todolist.forms import LoginForm, RegisterForm, TaskForm
@@ -22,14 +21,15 @@ def home():
 def tasks():
     form = TaskForm()
     if request.method == "POST":
-        
+        print(request.form.get('protocol'))
+
         # if 'done' button pressed, delete task from db
-        if form.kill.data != "":
-            print(form.kill.data)
-            done_task = Task.query.filter_by(id=form.kill.data).first()
+        if request.form.get('protocol') == 'delete':
+            print(form.delete.data)
+            done_task = Task.query.filter_by(id=form.delete.data).first()
             db.session.delete(done_task)
             db.session.commit()
-        else:
+        elif request.form.get('protocol') == 'post':
             # ensure at least title entered
             if form.title.data != '':
                 # add task to db
@@ -40,6 +40,13 @@ def tasks():
             
                 db.session.add(task)
                 db.session.commit()
+        elif request.form.get('protocol') == 'put':
+            task = Task.query.filter_by(id=request.form.get('id')).first()
+            print(task.title)
+            task.title = request.form.get('puttitle')
+            print(task.title)
+            task.description = request.form.get('putdescription')
+            db.session.commit()
 
     # retrieve tasks from db
     tasks = Task.query.filter_by(user=User.query.filter_by(id=session['user_id']).first().id).all()

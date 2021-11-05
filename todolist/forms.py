@@ -31,5 +31,7 @@ class TaskForm(FlaskForm):
     title = StringField(label='Title:', validators=[DataRequired()])
     description = StringField(label='Description:')
     importance = RadioField(label='Importance:')
-    kill = StringField()
+    delete = StringField()
     subbutt = SubmitField(label='Submit')
+    put_title = StringField()
+    put_description = StringField()

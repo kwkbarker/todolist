@@ -2,6 +2,7 @@ from todolist import db, login_manager, admin
 from flask_login import UserMixin
 from flask_admin.contrib.sqla import ModelView
 import bcrypt
+# from sqlalchemy.schema import CreateTable
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -43,3 +44,7 @@ class Task(db.Model):
 # add db views to admin page
 admin.add_view(ModelView(User, db.session))
 admin.add_view(ModelView(Task, db.session))
+
+# # prints SQL commands for cloud sql table creation
+# print(CreateTable(User.__table__))
+# print(CreateTable(Task.__table__))
