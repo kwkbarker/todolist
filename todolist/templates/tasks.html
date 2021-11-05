@@ -32,7 +32,7 @@
                                 </div>
                                 <div class='col-sm-4 text-right'>
                                         <a class='btn btn-sm btn-outline-dark' name="edit" id="edit{{ task.id }}" 
-                                            data-toggle="modal" data-target="#editWindow{{ task.id }}" onclick=`fillFields( {{ task.id }} )`>Edit</a>
+                                            data-toggle="modal" data-target="#editWindow{{ task.id }}" onclick=`return fillFields( {{ task.id }} )`>Edit</a>
                                     <form method='POST'>
                                         <input type="hidden" name="protocol" value="delete">
                                         <button class='btn btn-sm btn-outline-dark' name="delete" value='{{ task.id }}'>Done!</button>

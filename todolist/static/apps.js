@@ -8,17 +8,17 @@ function clearFields() {
 }
 
 function fillFields(task) {
-    console.log(task)
+    console.log(task);
     
     var title = document.getElementById(`title${task}`);
-    console.log(title.value)
+    console.log(title.value);
     
     var edittitle = document.getElementById(`edittitle${task}`);
     var description = document.getElementById(`description${task}`);
     var editdescription = document.getElementById(`editdescription${task}`);
     
-    edittitle.innerHTML = title.innerHTML;
-    editdescription.innerHTML = description.innerHTML;
+    edittitle.value = title.value;
+    editdescription.value = description.value;
 }
 
 // function editTask(task) {
@@ -64,7 +64,5 @@ function fillFields(task) {
 
 //         var edittitle = document.getElementById(`edittitle${task}`);
 //         var editdescription = document.getElementById(`editdescription${task}`);
-
 //     }
-
 // }

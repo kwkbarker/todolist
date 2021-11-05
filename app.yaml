@@ -1,8 +1,8 @@
-# runtime: python38
+runtime: python38
 
-# env_variables:
-#   BUCKET_NAME: 'todolist-bucket'
-#   CLOUD_SQL_USERNAME: kwkbarker
-#   CLOUD_SQL_PASSWORD: kwkbarker
-#   CLOUD_SQL_DATABASE_NAME: todolist-db
-#   CLOUD_SQL_CONNECTION_NAME: barker-todolist:us-east4:todolist-db
+env_variables:
+  BUCKET_NAME: 'todolist-bucket'
+  CLOUD_SQL_USERNAME: 'kwkbarker'
+  CLOUD_SQL_PASSWORD: 'kwkbarker'
+  CLOUD_SQL_DATABASE_NAME: 'todolist-db'
+  CLOUD_SQL_CONNECTION_NAME: 'barker-todolist:us-east4:todolist-db'
