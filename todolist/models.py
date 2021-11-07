@@ -35,7 +35,7 @@ class Task(db.Model):
     id = db.Column(db.Integer(), primary_key=True)
     title = db.Column(db.String(length=128), nullable=False)
     description = db.Column(db.String(length=1024), nullable=False)
-    importance = db.Column(db.String(length=12), nullable=False)
+    importance = db.Column(db.String(length=12), nullable=True)
     user = db.Column(db.Integer(), db.ForeignKey('user.id'))
 
     def __repr__(self):
