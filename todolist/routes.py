@@ -1,11 +1,23 @@
 from flask.globals import request
 from flask_login.utils import logout_user
-from todolist import app, db
+from todolist import app
 from flask import render_template, redirect, url_for, session, flash, request
 from todolist.models import Task, User
 from todolist.forms import LoginForm, RegisterForm, TaskForm
 from todolist.helpers import login_required
 from flask_login import login_user, current_user
+from todolist.database import db_session, Base, engine
+
+def init_db():
+    # import all modules here that might define models so that
+    # they will be registered properly on the metadata.  Otherwise
+    # you will have to import them first before calling init_db()
+    import todolist.models
+    Base.metadata.create_all(bind=engine)
+
+if __name__=='__main__()':
+    init_db()
+
 
 @app.route('/')
 @app.route('/index')
@@ -26,9 +38,9 @@ def tasks():
         # if 'done' button pressed, delete task from db
         if request.form.get('protocol') == 'delete':
             print(form.delete.data)
-            done_task = Task.query.filter_by(id=form.delete.data).first()
-            db.session.delete(done_task)
-            db.session.commit()
+            done_task = db_session.query(Task).filter(Task.id==form.delete.data).first()
+            db_session.delete(done_task)
+            db_session.commit()
         elif request.form.get('protocol') == 'post':
             # ensure at least title entered
             if form.title.data != '':
@@ -38,18 +50,18 @@ def tasks():
                             importance=form.importance.data,
                             user=session['user_id'])
             
-                db.session.add(task)
-                db.session.commit()
+                db_session.add(task)
+                db_session.commit()
         elif request.form.get('protocol') == 'put':
-            task = Task.query.filter_by(id=request.form.get('id')).first()
+            task = db_session.query(Task).filter(Task.id==request.form.get('id')).first()
             print(task.title)
             task.title = request.form.get('puttitle')
             print(task.title)
             task.description = request.form.get('putdescription')
-            db.session.commit()
+            db_session.commit()
 
     # retrieve tasks from db
-    tasks = Task.query.filter_by(user=User.query.filter_by(id=session['user_id']).first().id).all()
+    tasks = db_session.query(Task).filter(Task.id==db_session.query(User).filter(User.id==session['user_id']).first().id).all()
     return render_template('tasks.html', tasks=tasks, form=form)
 
 @app.route('/register', methods = ['GET', 'POST'])
@@ -60,8 +72,8 @@ def register():
             user = User(username=form.username.data,
                         email=form.email.data,
                         password=form.password.data)
-            db.session.add(user)
-            db.session.commit()
+            db_session.add(user)
+            db_session.commit()
             return redirect(url_for('login'))
         
         # error handling
@@ -76,8 +88,7 @@ def login():
     form = LoginForm()
     if request.method == 'POST':
         if form.validate_on_submit():
-            user_id = User.query.filter_by(username=form.username.data).first()
-            print(f'user_id={user_id.id}')
+            user_id = db_session.query(User).filter(User.username==form.username.data).first()
             if user_id and user_id.check_password(pass_to_check=form.password.data):
                 session['user_id'] = user_id.id
                 login_user(user_id)
@@ -95,3 +106,9 @@ def logout():
     session.clear()
     logout_user()
     return redirect('/')
+
+from todolist.database import db_session
+
+@app.teardown_appcontext
+def shutdown_session(exception=None):
+    db_session.remove()

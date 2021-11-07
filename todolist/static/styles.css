@@ -14,3 +14,9 @@ body {
 .card .bg-secondary {
     background-color: #bfbfbf !important;
 }
+
+.right-buttons .btn-sm {
+    width: 5em;
+    margin-top: 2px;
+    margin-bottom: 2px;
+}
