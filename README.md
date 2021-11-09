@@ -56,6 +56,12 @@ Provides a Model View of the database.
 
 - Register, Login, and Task forms
 
+## APPS.js
+
+- clearFields() - clears the fields of the task form when the form is submitted.
+
+- fillFields() - called when an edit modal is launched; prefills the edit fields with the task's existing text.
+
 ## POSSIBLE IMPROVEMENTS
 
 - restrict admin access
