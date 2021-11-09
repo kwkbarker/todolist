@@ -21,3 +21,5 @@ __pycache__/
 /flask_session
 .vscode
 __init__.pyc
+/venv
+.DS_Store
