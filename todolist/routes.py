@@ -93,11 +93,3 @@ def logout():
     session.clear()
     logout_user()
     return redirect('/')
-
-@app.route('/connect')
-def connect():
-    try:
-        conn = psycopg2.connect("dbname='postgres' user='postgres' host='172.17.0.1' password='test'")
-        return "Connection was established!"
-    except:
-        return "I am unable to connect to the database"
