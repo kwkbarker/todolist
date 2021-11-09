@@ -14,8 +14,6 @@ INSTANCE_NAME ="barker-todolist:us-east4:todolist-db"
  
 # configuration
 
-# DB_URI = "postgresql+pg8000://kwkbarker:{PASSWORD}@/{DBNAME}?unix_sock=<socket_path>/<cloud_sql_instance_name>/.s.PGSQL.5432"
-
 app.config["SQLALCHEMY_DATABASE_URI"]= f'postgresql+psycopg2://kwkbarker:{PASSWORD}@/{DBNAME}?host={PUBLIC_IP_ADDRESS}'
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"]= True
 

@@ -2,19 +2,3 @@ runtime: python38
 
 env_variables:
   BUCKET_NAME: 'todolist-bucket'
-#   CLOUD_SQL_USERNAME: 'kwkbarker'
-#   CLOUD_SQL_PASSWORD: 'theBusiness'
-#   CLOUD_SQL_DATABASE_NAME: 'todolist-db'
-#   CLOUD_SQL_CONNECTION_NAME: 'barker-todolist:us-east4:todolist-db'
-
-# handlers:
-# - url: /static
-#   static_dir: static
-# -url: /templates
-#   static_dir: templates
-
-# - url: /.*
-#   script: auto
-
-beta_settings:
-  cloud_sql_instances: barker-todolist:us-east4:todolist-db=tcp:5432
