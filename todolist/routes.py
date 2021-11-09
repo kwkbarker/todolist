@@ -21,11 +21,9 @@ def home():
 def tasks():
     form = TaskForm()
     if request.method == "POST":
-        print(request.form.get('protocol'))
 
         # if 'done' button pressed, delete task from db
         if request.form.get('protocol') == 'delete':
-            print(form.delete.data)
             done_task = Task.query.filter_by(id=form.delete.data).first()
             db.session.delete(done_task)
             db.session.commit()
@@ -42,9 +40,7 @@ def tasks():
                 db.session.commit()
         elif request.form.get('protocol') == 'put':
             task = Task.query.filter_by(id=request.form.get('id')).first()
-            print(task.title)
             task.title = request.form.get('puttitle')
-            print(task.title)
             task.description = request.form.get('putdescription')
             db.session.commit()
 
@@ -57,6 +53,7 @@ def register():
     form = RegisterForm()
     if request.method == 'POST':
         if form.validate_on_submit():
+            print('validated')
             user = User(username=form.username.data,
                         email=form.email.data,
                         password=form.password.data)
@@ -77,7 +74,7 @@ def login():
     if request.method == 'POST':
         if form.validate_on_submit():
             user_id = User.query.filter_by(username=form.username.data).first()
-            print(f'user_id={user_id.id}')
+            print(user_id)
             if user_id and user_id.check_password(pass_to_check=form.password.data):
                 session['user_id'] = user_id.id
                 login_user(user_id)

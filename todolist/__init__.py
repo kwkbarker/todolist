@@ -6,14 +6,27 @@ from flask_admin import Admin
 # initialize app, db, session, hash function, login, admin
 app = Flask(__name__, static_url_path='/todolist/static')
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///todolist.db'
+
+PASSWORD ="theBusiness"
+PUBLIC_IP_ADDRESS ="34.145.154.60"
+DBNAME ="todolist-db"
+INSTANCE_NAME ="barker-todolist:us-east4:todolist-db"
+ 
+# configuration
+
+app.config["SQLALCHEMY_DATABASE_URI"]= f'postgresql+psycopg2://kwkbarker:{PASSWORD}@/{DBNAME}?host={PUBLIC_IP_ADDRESS}'
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"]= True
+
+# initialize database
 db = SQLAlchemy(app)
+db.drop_all()
+db.create_all()
+
 
 app.config['SECRET_KEY'] = '5475298b378974fc7aa4f496'
 
 app.config['SESSION_PERMANENT'] = True
 app.config['SESSION_TYPE'] = 'filesystem'
-# Session(app)
 
 login_manager = LoginManager()
 login_manager.init_app(app)
