@@ -7,6 +7,10 @@ from todolist.forms import LoginForm, RegisterForm, TaskForm
 from todolist.helpers import login_required
 from flask_login import login_user, current_user
 import psycopg2
+from todolist.storage import get_profile_pic, upload_blob
+import os
+from dotenv import load_dotenv
+
 
 @app.route('/')
 @app.route('/index')
@@ -93,3 +97,29 @@ def logout():
     session.clear()
     logout_user()
     return redirect('/')
+
+
+@app.route('/upload', methods=['POST'])
+@login_required
+def upload():
+    
+    bucket_name = os.environ.get('BUCKET')
+    profile_pic = request.files["profile_pic"]
+    dest_filename = f"{current_user.username}-profile-pic"
+    upload_blob(bucket_name, profile_pic, dest_filename)
+
+    return redirect(url_for('profile'))
+
+@app.route('/profile')
+@login_required
+def profile():
+    # get profile pic
+    filename = f"{current_user.username}-profile-pic"
+    public_url = get_profile_pic(os.environ.get('BUCKET'), filename)
+    print(public_url)
+    if public_url is not None:
+        profile_pic = public_url
+    else:
+        profile_pic = 'https://storage.googleapis.com/todolist-bucket/default-profile-pic'
+    return render_template('profile.html', profile_pic=profile_pic)
+    

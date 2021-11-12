@@ -20,3 +20,11 @@ body {
     margin-top: 2px;
     margin-bottom: 2px;
 }
+
+.profile_pic {
+    max-height: 10em;
+}
+
+.uploader {
+    margin-top: .5em;
+}

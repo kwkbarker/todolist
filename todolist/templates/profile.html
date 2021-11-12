@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Profile - {{ current_user.username }}
+{% endblock %}
+
+{% block content %}
+
+    <div class="container">
+        <div class="row row-content mb-5 mt-5">
+            <div class="col-12">
+                <h1 class="mb-5">Profile</h1>
+                <!--PROFILE PIC-->
+                <img src="{{ profile_pic }}" class="profile_pic" id="profile_pic">
+
+            </div>
+
+        </div>
+
+        <div class="row row-content ">
+            <div class="col-12">
+                <h3>Upload a new profile picture</h3>
+                <div class="uploader">
+                    <form action="{{ url_for('upload') }}" method="POST"
+                        enctype = "multipart/form-data">
+                        <input type="file" name="profile_pic" accept="image/png, image/jpeg, image/jpg" />
+                        <input type="submit" />                    
+                    </form>
+                </div>
+            </div>
+
+        </div>
+
+        <script src="todolist/static/apps-profile.js"></script>
+
+
+
+
+
+    </div>
+
+
+
+
+
+{% endblock %}
