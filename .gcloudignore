@@ -22,4 +22,4 @@ __pycache__/
 .vscode
 __init__.pyc
 /venv
-.DS_Store
+.DS_Store.DS_Store 
