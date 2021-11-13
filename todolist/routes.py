@@ -115,7 +115,7 @@ def upload():
 @login_required
 def profile():
     # get profile pic
-    bucket = os.environ.get('BUCKET')
+    bucket = "todolist-bucket"
     filename = f"{current_user.username}-profile-pic"
     public_url = get_profile_pic(bucket, filename)
     print(public_url)
