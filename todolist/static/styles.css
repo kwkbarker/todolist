@@ -28,3 +28,12 @@ body {
 .uploader {
     margin-top: .5em;
 }
+
+.textfield p {
+    display: flex;
+    justify-content: center;
+}
+
+.textfield input {
+    width: 20em;
+}

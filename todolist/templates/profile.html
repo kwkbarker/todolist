@@ -8,8 +8,8 @@
 
     <div class="container">
         <div class="row row-content mb-5 mt-5">
-            <div class="col-12">
-                <h1 class="mb-5">Profile</h1>
+            <div class="col-12 text-center">
+                <h1 class="mb-5">{{ current_user.username }}</h1>
                 <!--PROFILE PIC-->
                 <img src="{{ profile_pic }}" class="profile_pic" id="profile_pic"
                     alt="profile pic">
@@ -18,18 +18,30 @@
 
         </div>
 
-        <div class="row row-content ">
-            <div class="col-12">
-                <h3>Upload a new profile picture</h3>
+        <div class="row row-content">
+            <div class="col-12 text-center">
+                <h4>Upload a new profile picture</h4>
                 <div class="uploader">
                     <form action="{{ url_for('upload') }}" method="POST"
                         enctype = "multipart/form-data">
-                        <input type="file" name="profile_pic" accept="image/png, image/jpeg, image/jpg" />
-                        <input type="submit" />                    
+                        <input type="file" class="btn btn-secondary mt-3" name="profile_pic" accept="image/png, image/jpeg, image/jpg" />
+                        <input type="submit" class="btn btn-primary mt-3" />                    
                     </form>
                 </div>
             </div>
 
+        </div>
+
+        <div class="mt-5">
+            <h4># Change Password #</h4>
+            <p>- to be implemented -</p>
+            <!--to be implemented-->
+        </div>
+
+        <div class="mt-5">
+            <h4># Change Email #</h4>
+            <p>- to be implemented -</p>
+            <!--to be implemented-->
         </div>
 
         <script src="todolist/static/apps-profile.js"></script>
