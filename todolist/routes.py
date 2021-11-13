@@ -104,7 +104,7 @@ def logout():
 @login_required
 def upload():
     
-    bucket_name = os.environ('BUCKET')
+    bucket_name = "todolist-bucket"
     profile_pic = request.files["profile_pic"]
     dest_filename = f"{current_user.username}-profile-pic"
     upload_blob(bucket_name, profile_pic, dest_filename)
