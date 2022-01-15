@@ -1,0 +1,5 @@
+clicking input field or radio check button in edit modal clears 
+preloaded text in input fields.
+
+"danger" importance buttons not auto-checked in edit fields of "danger" tasks,
+New Task importance defaulting to "danger"

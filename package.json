@@ -1,0 +1,20 @@
+{
+  "name": "complete-vuejs-3",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "@vue/compiler-sfc": "3.0.7",
+    "@vue/server-renderer": "^3.0.7",
+    "vue": "^3.0.7",
+    "vue-router": "4.0.5",
+    "vuex": "^4.0.2"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "2.0.1",
+    "vite": "^2.7.10"
+  },
+  "peerDependencies": {
+    "@vue/compiler-sfc": "^3.0.7"
+  }
+}
